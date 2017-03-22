@@ -37,7 +37,7 @@ gem 'sidekiq-throttler'
 gem 'redis-rails'
 
 gem 'devise'
-gem 'jwt'
+gem 'devise-jwt', '~> 0.1.1'
 gem 'oauth'
 
 

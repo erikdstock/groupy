@@ -2,10 +2,13 @@ version: '2'
 volumes:
   groupy-redis:
   groupy-postgres:
+  groupy-gemcache:
 
 services:
   app:
     build: 
+      args:
+        bundle_path: /usr/local/bundle
       context: .
       dockerfile: Dockerfile
     command: "./script/start.sh"
@@ -14,6 +17,7 @@ services:
       - redis
     volumes:
       - ./app:/src
+      - groupy-gemcache:/usr/local/bundle
     ports:
       - '3000:3000'
     env_file:
@@ -25,12 +29,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        bundle_path: /usr/local/bundle
     command: "./script/sidekiq.sh"
     links:
       - postgres
       - redis
     volumes:
       - ./app:/src
+      - groupy-gemcache:/usr/local/bundle
     env_file:
       - .docker.env
     stdin_open: true
