@@ -27,5 +27,11 @@ module Src
     # If you've never dealt with background workers before, this is the Rails
     # way to use them through Active Job. We just need to tell it to use Sidekiq.
     config.active_job.queue_adapter = :sidekiq
+
+    config.generators do |g|
+      g.test_framework :rspec
+    end
+    config.autoload_paths << Rails.root.join('lib')
+
   end
 end

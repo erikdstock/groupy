@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.0.beta1'
 # Use postgresql as the database for Active Record
@@ -38,7 +37,8 @@ gem 'redis-rails'
 
 gem 'devise'
 gem 'devise-jwt', '~> 0.1.1'
-gem 'oauth'
+gem 'omniauth-lastfm', '~>0.0.7' # Lastfm omniauth
+# gem 'oauth' # I dont think this is needed. 
 
 
 group :development, :test do
@@ -46,7 +46,22 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.7.0'
+  gem 'faker'
   gem 'selenium-webdriver'
+  gem 'awesome_print'
+  gem 'rspec-rails'
+end
+group :test do
+  gem 'database_cleaner'
+  gem 'shoulda-matchers', '~> 3.1'
+  gem 'launchy', '~> 2.4', '>= 2.4.3'
+  gem 'jasmine-rails'
+  gem 'factory_girl_rails', "~> 4.0"
+  gem 'vcr', group: :test
+  gem 'webmock', group: :test
+  gem 'simplecov', :require => false, :group => :test
+  gem 'codeclimate-test-reporter', group: :test, require: nil
+
 end
 
 group :development do
@@ -78,19 +93,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # gem 'codeclimate-test-reporter', group: :test, require: nil
 
 # group :development, :test do
-#   gem 'factory_girl_rails', "~> 4.0"
-#   gem 'faker'
-#   gem 'jasmine-rails'
-#   gem 'database_cleaner'
-#   gem 'capybara'
-#   gem 'rspec-rails'
-#   gem 'selenium-webdriver'
-#   gem 'byebug'
-#   gem 'awesome_print'
-#   gem 'spring'
 # end
 
 # group :test do
-#   gem 'shoulda-matchers', '~> 3.1'
-#   gem 'launchy', '~> 2.4', '>= 2.4.3'
 # end

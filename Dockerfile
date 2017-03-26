@@ -1,6 +1,5 @@
 FROM ruby:2.3
-ENTRYPOINT ["bundle", "exec"]
-ARG bundle_path
+# ENTRYPOINT ["bundle", "exec"]
 # throw errors if Gemfile has been modified since Gemfile.lock
 # RUN bundle config --global frozen 1
 ENV INSTALL_PATH /src
@@ -20,16 +19,15 @@ rm -rf /var/lib/apt/lists/*
 
 COPY app/Gemfile* ./
 
-# Uncomment the line below if Gemfile.lock is maintained outside of build process
-# COPY Gemfile.lock ./
-
-RUN bundle install --path $bundle_path && \
-cp Gemfile.lock $bundle_path
+# Bundle
+RUN echo $BUNDLE_PATH && bundle install
 
 COPY app .
-RUN cp $bundle_path/Gemfile.lock ./
+
+# Unclobber the updated gemfile.lock
+# RUN mv $bundle_path/Gemfile.lock ./
 
 # For puma (rails default in script)
-CMD ["./script/start.sh"]
+CMD ["rails", "s", "-b", "0.0.0.0"]
 # The default command that gets ran will be to start the Unicorn server. [NOT USING]
 # CMD ["bundle", "exec", "unicorn", "-c", "config/unicorn.rb"]

@@ -7,11 +7,8 @@ volumes:
 services:
   app:
     build: 
-      args:
-        bundle_path: /usr/local/bundle
       context: .
       dockerfile: Dockerfile
-    command: "./script/start.sh"
     links:
       - postgres
       - redis
@@ -29,9 +26,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        bundle_path: /usr/local/bundle
-    command: "./script/sidekiq.sh"
+    command: "bundle exec sidekiq -C config/sidekiq.yml"
     links:
       - postgres
       - redis
@@ -46,7 +41,7 @@ services:
   redis:
     image: redis:3.0.5
     ports:
-      - '6379:6379'
+      - '6379'
     volumes:
       - groupy-redis:/var/lib/redis/data
 
@@ -56,6 +51,6 @@ services:
       POSTGRES_USER: groupy
       POSTGRES_PASSWORD: yourpassword
     ports:
-      - '5432:5432'
+      - '5432'
     volumes:
       - groupy-postgres:/var/lib/postgresql/data

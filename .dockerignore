@@ -1,0 +1,9 @@
+.git
+.dockerignore
+
+**node_modules/
+# **Gemfile.lock
+
+**log/
+**coverage/
+tmp/
