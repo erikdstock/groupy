@@ -3,12 +3,10 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'dashboard#main', as: :user_dashboard
 
   devise_for :users, controllers: {
-    sessions: 'users/sessions',
+    # sessions: 'users/sessions',
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
-  # devise_scope :user do
-  #   get 'sign_in', to: 'devise/sessions#new'
-  # end
+
   devise_scope :user do
     get 'sign_in', to: 'users/sessions#new', as: :new_user_session
     post 'sign_in' => 'users/sessions#create', :as => :user_session
