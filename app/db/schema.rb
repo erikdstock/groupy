@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170326071617) do
+ActiveRecord::Schema.define(version: 20170402004845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,15 @@ ActiveRecord::Schema.define(version: 20170326071617) do
     t.datetime "updated_at", null: false
     t.string "give_to_url"
     t.boolean "give_to_verified", default: false
+  end
+
+  create_table "authorizations", force: :cascade do |t|
+    t.string "provider"
+    t.string "uid"
+    t.string "token"
+    t.string "token_secret"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_authorizations_on_user_id"
   end
 
   create_table "monthly_top_artists", force: :cascade do |t|

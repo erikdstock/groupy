@@ -12,7 +12,7 @@ FactoryGirl.define do
     # (may 2016) it should be 12 plays.
     factory :user_with_stats do
       after(:create) do |user, _evaluator|
-        artist = create :artist, name: "MisterWives"
+        artist = create :artist, name: 'MisterWives'
         create(:monthly_top_artist, artist: artist, play_count: 5, user: user, month: 1.month.ago)
       end
     end
@@ -34,5 +34,4 @@ FactoryGirl.define do
   #     create_list(:post, evaluator.posts_count, user: user)
   #   end
   # end
-
 end

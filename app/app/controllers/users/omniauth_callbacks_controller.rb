@@ -8,9 +8,11 @@ module Users
       else
         session['devise.lastfm_data'] = auth_hash
         redirect_to :root
-        set_flash_message(:notice, :failure,
-                          kind: 'lastfm',
-                          reason: @user.errors.full_messages) if is_navigational_format?
+        if is_navigational_format?
+          set_flash_message(:notice, :failure,
+                            kind: 'lastfm',
+                            reason: @user.errors.full_messages)
+        end
       end
     end
   end

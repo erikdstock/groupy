@@ -1,15 +1,15 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise  :omniauthable, omniauth_providers: [:lastfm]
-  #  :database_authenticatable, :registerable,
-  #  :recoverable, :rememberable, :trackable, :validatable
+  # Include devise modules. Others available are:
+  #  :confirmable, :lockable, :timeoutable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable,
+         :trackable, :validatable, :omniauthable, omniauth_providers: [:lastfm]
+  has_many :monthly_top_artists
+
+  has_many :top_artists, through: :monthly_top_artists, source: :artist
+  after_create :queue_initial_refresh
 
   include ListeningStats
   include TimeTools
-  has_many :monthly_top_artists
-  has_many :top_artists, through: :monthly_top_artists, source: :artist
-  after_create :queue_initial_refresh
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -75,7 +75,7 @@ class User < ApplicationRecord
   def save_collection(collection)
     success = collection.map(&:save)
     unless success.all?
-      errored = new_collection.select { |m| !m.errors.blank? }
+      errored = new_collection.reject { |m| m.errors.blank? }
       errored.each { |m| logger.warn m.errors }
       return false
     end

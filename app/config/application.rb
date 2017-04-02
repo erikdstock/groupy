@@ -16,7 +16,7 @@ module Src
     # Docker expects your application to log to STDOUT/STDERR and to be ran
     # in the foreground.
     config.log_level = :debug
-    config.log_tags  = [:subdomain, :uuid]
+    config.log_tags  = %i(subdomain uuid)
     config.logger    = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
 
     # Since we're using Redis for Sidekiq, we might as well use Redis to back
@@ -32,6 +32,5 @@ module Src
       g.test_framework :rspec
     end
     config.autoload_paths << Rails.root.join('lib')
-
   end
 end

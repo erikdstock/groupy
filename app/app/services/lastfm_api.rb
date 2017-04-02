@@ -3,7 +3,7 @@ class LastfmApi < BaseApi
   attr_reader :base
 
   def initialize
-    @base = "http://ws.audioscrobbler.com/2.0/"
+    @base = 'http://ws.audioscrobbler.com/2.0/'
   end
 
   # Paginates through user.getrecenttracks, reducing tracks to artists with track count.
