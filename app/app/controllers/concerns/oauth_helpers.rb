@@ -18,12 +18,7 @@ module Concerns
       p "creating new user"
       user = User.new
       user.apply_omniauth(omni)
-      if omni['extra']['raw_info'].email
-        user.email = omni['extra']['raw_info'].email
-      else
-        p 'no email'
-        # redirect_to new_user_registration_path user GOTTA MAKE THIS WORK TODO
-      end
+      user.email = omni['extra']['raw_info'].email
       if user.save 
         sign_in_and_redirect user
       else
@@ -33,7 +28,7 @@ module Concerns
     end
 
     def after_sign_in_path_for(user)
-      user_path(user)
+      user_dashboard_path
     end
 
   end

@@ -1,38 +1,23 @@
 class User < ApplicationRecord
-  include ListeningStats
+  include Concerns::ListeningStats
   include TimeTools
   has_many :authentications
   has_many :monthly_top_artists
   has_many :top_artists, through: :monthly_top_artists, source: :artist
 
-  devise(
-    # :confirmable,            # sends emails with confirmation instructions and verifies whether an account is already confirmed 
-    :database_authenticatable, # hashes and stores a password in the database to validate the authenticity of a user while signing in. 
-    # :lockable,               # lock account after failed signin attempts
-    :omniauthable,             # omniauth.
-    :recoverable,              # Password reset
-    :registerable,             # handles signing up users through a registration process, also allowing them to edit and destroy their account.
-    :rememberable,             # manages generating and clearing a token for remembering the user from a saved cookie.
-    # :timeoutable,            # expires sessions that have not been active in a specified period of time.
-    :trackable,                # tracks sign in count, timestamps and IP address.
-    :validatable,              # provides validations of email and password.
-    omniauth_providers: [:lastfm]
-  )
   after_create :queue_initial_refresh
 
-
-  def apply_omniauth(omni)
-    authentications.build(
-      provider: omni['provider'],
-      uid: omni['uid'],
-      token: omni['credentials'].token,
-      token_secret: omni['credentials'].secret
-    )
-  end
-
-  def password_required?
-    authentications.empty? && super
-  end
+  devise :database_authenticatable, # hashes and stores a password in the database to validate user
+      :omniauthable,             # omniauth.
+      :recoverable,              # Password reset
+      :registerable,             # handles signing up users through a registration process
+      :rememberable,             # manages generating and clearing a token for remembering the user from cookie
+      :trackable,                # tracks sign in count, timestamps and IP address.
+      :validatable,              # provides validations of email and password.
+      omniauth_providers: [:lastfm]
+    # :confirmable,            # sends emails with confirmation instructions and verifies an account is confirmed
+    # :lockable,               # lock account after failed signin attempts
+    # :timeoutable,            # expires sessions that have not been active in a specified period of time.
 
   # Get top artists for month
   # @param {Time}
@@ -95,4 +80,23 @@ class User < ApplicationRecord
     end
     true
   end
+
+  ### Devise methods
+  def password_required?
+    authentications.empty? && super
+  end
+
+  def email_required?
+    authentications.empty? && super
+  end
+
+  def apply_omniauth(omni)
+    authentications.build(
+      provider: omni['provider'],
+      uid: omni['uid'],
+      token: omni['credentials'].token,
+      token_secret: omni['credentials'].secret
+    )
+  end
+
 end

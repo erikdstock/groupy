@@ -2,10 +2,6 @@ module Users
   class RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-    
-    def complete_signup
-      # Maybe the user needs to add an email.
-    end
 
     # GET /resource/sign_up
     # def new
