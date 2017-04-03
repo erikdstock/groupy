@@ -24,13 +24,13 @@ ActiveRecord::Schema.define(version: 20170402004845) do
     t.boolean "give_to_verified", default: false
   end
 
-  create_table "authorizations", force: :cascade do |t|
+  create_table "authentications", force: :cascade do |t|
     t.string "provider"
     t.string "uid"
     t.string "token"
     t.string "token_secret"
     t.bigint "user_id"
-    t.index ["user_id"], name: "index_authorizations_on_user_id"
+    t.index ["user_id"], name: "index_authentications_on_user_id"
   end
 
   create_table "monthly_top_artists", force: :cascade do |t|
@@ -60,8 +60,6 @@ ActiveRecord::Schema.define(version: 20170402004845) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "provider"
-    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

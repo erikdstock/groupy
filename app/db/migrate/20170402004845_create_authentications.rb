@@ -1,6 +1,6 @@
 class CreateAuthentications < ActiveRecord::Migration[5.1]
   def change
-    create_table :authorizations do |t|
+    create_table :authentications do |t|
       t.string :provider
       t.string :uid
       t.string :token

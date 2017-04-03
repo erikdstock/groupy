@@ -254,8 +254,8 @@ Devise.setup do |config|
                   client_options: {
                     callback: 'http://localhost:3000/users/auth/lastfm/callback'
                   }
-  # config.omniauth :spotify, 
-    # user-read-recently-played
+  # config.omniauth :spotify,
+  # user-read-recently-played
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

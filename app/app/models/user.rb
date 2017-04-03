@@ -1,23 +1,27 @@
 class User < ApplicationRecord
-  # Include devise modules. Others available are:
+  include ListeningStats
+  include TimeTools
+  has_many :authentications
+  has_many :monthly_top_artists
+  has_many :top_artists, through: :monthly_top_artists, source: :artist
+
   #  :confirmable, :lockable, :timeoutable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable,
          :trackable, :validatable, :omniauthable, omniauth_providers: [:lastfm]
-  has_many :monthly_top_artists
-
-  has_many :top_artists, through: :monthly_top_artists, source: :artist
   after_create :queue_initial_refresh
 
-  include ListeningStats
-  include TimeTools
 
-  def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.password = Devise.friendly_token[0, 20]
-      # user.email     = auth.info.email # not in lastfm hash
-      user.name      = auth.info.name
-      user.image     = auth.info.image
-    end
+  def apply_omniauth(omni)
+    user.authentications.build(
+      provider: omni['provider'],
+      uid: omni['uid'],
+      token: omni['credentials'].token,
+      token_secret: omni['credentials'].secret
+    )
+  end
+
+  def password_required?
+    authentications.empty? && super
   end
 
   # Get top artists for month

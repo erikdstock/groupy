@@ -1,6 +1,8 @@
 module Users
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-    def lastfm
+    include OauthHelpers
+
+    def lastfm_old
       @user = User.from_omniauth(auth_hash)
       if @user.persisted?
         sign_in_and_redirect(@user) # , event: :authentication #used for Warden Callbacks w/ devise
@@ -16,10 +18,20 @@ module Users
       end
     end
 
-    private
+    def lastfm
+    end
 
-    def auth_hash
-      request.env['omniauth.auth']
+
+    def spotify
+      omni = request.env['omniauth.auth']
+      authentication = Authentication.find_by_provider_and_uid(omni['provider'], omni['uid'])
+      if authentication
+        sign_in_user(authentication)
+      elsif current_user
+        add_new_oauth(authentication, omni)
+      else
+        create_new_user(omni)
+      end
     end
   end
 end

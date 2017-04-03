@@ -3,8 +3,9 @@ FactoryGirl.define do
     password Devise.friendly_token[0, 20]
     email 'user@test.com'
     name 'erikdstock'
-    uid 'erikdstock' # user in lastfm api examples
-    provider 'lastfm'
+    after(:create) do |user, _evaluator|
+      create(:authentication, user: user)
+    end
 
     # after(:build) { |u| u.class.skip_callback(:create, :after, :queue_initial_refresh) }
 
