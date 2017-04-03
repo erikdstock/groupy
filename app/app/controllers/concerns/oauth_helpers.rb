@@ -15,13 +15,19 @@ module Concerns
     end
 
     def create_new_user(omni)
+      p "creating new user"
       user = User.new
-      user.email = omni['extra']['raw_info'].email if omni['extra']['raw_info'].email
       user.apply_omniauth(omni)
-      byebug
+      if omni['extra']['raw_info'].email
+        user.email = omni['extra']['raw_info'].email
+      else
+        p 'no email'
+        # redirect_to new_user_registration_path user GOTTA MAKE THIS WORK TODO
+      end
       if user.save 
         sign_in_and_redirect user
       else
+        p user.errors.full_messages
         redirect_to new_user_registration_path
       end
     end

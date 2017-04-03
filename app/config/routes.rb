@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'dashboard#main', as: :user_dashboard
 
   devise_for :users, controllers: {
+    registrations: 'users/registrations',
     sessions: 'users/sessions',
     omniauth_callbacks: 'users/omniauth_callbacks'
   }

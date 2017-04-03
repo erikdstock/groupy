@@ -252,7 +252,7 @@ Devise.setup do |config|
                   ENV['LASTFM_ID'],
                   ENV['LASTFM_SECRET'],
                   client_options: {
-                    callback: 'http://localhost:3000/users/auth/lastfm/callback'
+                    callback: "#{ENV['APP_ROOT']}/users/auth/lastfm/callback"
                   }
   # config.omniauth :spotify,
   # user-read-recently-played
