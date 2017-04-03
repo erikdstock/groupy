@@ -54,8 +54,8 @@ RSpec.describe User, type: :model do
         time = 1.month.ago
         initial = user.top_artists_for_month(time)
         artist = initial.first.artist
-        data = {artist.name => {play_count: 13, image: 'foo'},
-                new_artist.name => {play_count: 7, image: 'bar'}}
+        data = { artist.name => { play_count: 13, image: 'foo' },
+                 new_artist.name => { play_count: 7, image: 'bar' } }
         user.update_top_artists_for_month(data, time)
         result = user.top_artists_for_month(time)
         change = result.where(artist_id: artist.id).first.play_count - initial.first.play_count

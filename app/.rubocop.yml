@@ -3,3 +3,21 @@ Rails:
   Enabled: true
 Style/Documentation:
   Enabled: False
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - bin/**/*
+Metrics/LineLength:
+  Max: 120
+  Exclude:
+    - config/initializers/**/*
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/BlockLength:
+  ExcludedMethods:
+    - describe
+    - it
+    - configure
+

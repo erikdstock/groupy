@@ -1,11 +1,10 @@
 class GiveToApi < BaseApi
-  BASE = "https://www.give.to/api/1.0".freeze
+  BASE = 'https://www.give.to/api/1.0'.freeze
 
-  def initialize
-  end
+  def initialize; end
 
   def check_artist(artist_name, args = {})
-    params = {artist_name: artist_name}.merge(args)
+    params = { artist_name: artist_name }.merge(args)
     req = RestClient::Request.new(method: :get,
                                   url: "#{BASE}/artists",
                                   payload: params)
@@ -22,9 +21,9 @@ class GiveToApi < BaseApi
 
   def parse_single_artist(response)
     artist = response['artists'][0]
-    {url: artist['url'],
-     image: artist['image'],
-     verified: artist['verified']}
+    { url: artist['url'],
+      image: artist['image'],
+      verified: artist['verified'] }
   end
 
   # Handle the response, checking both the status code and errors property in the json

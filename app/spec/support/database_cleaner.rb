@@ -1,7 +1,6 @@
 require 'capybara/rspec'
 
 RSpec.configure do |config|
-
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
@@ -44,5 +43,4 @@ RSpec.configure do |config|
   config.append_after(:each) do
     DatabaseCleaner.clean
   end
-
 end

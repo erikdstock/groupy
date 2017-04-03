@@ -10,7 +10,7 @@ class GiveToUpdateArtistInfoWorker
         logger.info "Updated #{artist.name}'s data"
         return true
       else
-        logger.info "error: save failed"
+        logger.info 'error: save failed'
         return false
       end
     end

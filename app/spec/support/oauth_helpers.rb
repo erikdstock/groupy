@@ -1,12 +1,11 @@
 module OauthHelpers
-
   def stub_omniauth(opts = {})
     default = {
-      :provider => :lastfm,
-      :uuid     => "erikdstock",
-      :info => {
-        :name => "erikdstock",
-        :image => "http://img2-ak.lst.fm/i/u/300x300/d471f884db13e2357c915c7547c59edf.png"
+      provider: :lastfm,
+      uuid: 'erikdstock',
+      info: {
+        name: 'erikdstock',
+        image: 'http://img2-ak.lst.fm/i/u/300x300/d471f884db13e2357c915c7547c59edf.png'
       }
     }
 

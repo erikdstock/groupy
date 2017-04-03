@@ -1,5 +1,5 @@
 class MonthlyTopArtist < ApplicationRecord
-    belongs_to :user
+  belongs_to :user
   belongs_to :artist, autosave: true
 
   include TimeTools
@@ -19,7 +19,7 @@ class MonthlyTopArtist < ApplicationRecord
 
   def this_month?
     if month.year == updated_at.year && month.month == updated_at.month
-      logger.warn "Current month- maybe deal with this more selectively some day"
+      logger.warn 'Current month- maybe deal with this more selectively some day'
       return true
     end
     false

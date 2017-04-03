@@ -1,5 +1,4 @@
 FactoryGirl.define do
-
   factory :monthly_top_artist do
     artist
     user

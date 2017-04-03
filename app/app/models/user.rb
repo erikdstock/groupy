@@ -1,24 +1,23 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise  :omniauthable, omniauth_providers: [:lastfm]
-  #  :database_authenticatable, :registerable,
-  #  :recoverable, :rememberable, :trackable, :validatable
-
-  include ListeningStats
+  include Concerns::ListeningStats
   include TimeTools
+  has_many :authentications
   has_many :monthly_top_artists
   has_many :top_artists, through: :monthly_top_artists, source: :artist
+
   after_create :queue_initial_refresh
 
-  def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.password = Devise.friendly_token[0, 20]
-      # user.email     = auth.info.email # not in lastfm hash
-      user.name      = auth.info.name
-      user.image     = auth.info.image
-    end
-  end
+  devise :database_authenticatable, # hashes and stores a password in the database to validate user
+      :omniauthable,             # omniauth.
+      :recoverable,              # Password reset
+      :registerable,             # handles signing up users through a registration process
+      :rememberable,             # manages generating and clearing a token for remembering the user from cookie
+      :trackable,                # tracks sign in count, timestamps and IP address.
+      :validatable,              # provides validations of email and password.
+      omniauth_providers: [:lastfm]
+    # :confirmable,            # sends emails with confirmation instructions and verifies an account is confirmed
+    # :lockable,               # lock account after failed signin attempts
+    # :timeoutable,            # expires sessions that have not been active in a specified period of time.
 
   # Get top artists for month
   # @param {Time}
@@ -75,10 +74,29 @@ class User < ApplicationRecord
   def save_collection(collection)
     success = collection.map(&:save)
     unless success.all?
-      errored = new_collection.select { |m| !m.errors.blank? }
+      errored = new_collection.reject { |m| m.errors.blank? }
       errored.each { |m| logger.warn m.errors }
       return false
     end
     true
   end
+
+  ### Devise methods
+  def password_required?
+    authentications.empty? && super
+  end
+
+  def email_required?
+    authentications.empty? && super
+  end
+
+  def apply_omniauth(omni)
+    authentications.build(
+      provider: omni['provider'],
+      uid: omni['uid'],
+      token: omni['credentials'].token,
+      token_secret: omni['credentials'].secret
+    )
+  end
+
 end
